@@ -4,14 +4,29 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio para gestionar las reservas en el sistema.
+ */
 public class ReservaService {
     private Connection conexion;
 
+    /**
+     * Constructor que recibe una conexión a la base de datos.
+     *
+     * @param conexion Conexión a la base de datos.
+     */
     public ReservaService(Connection conexion) {
         this.conexion = conexion;
     }
 
-    // Obtener mesas disponibles
+    /**
+     * Busca mesas disponibles según el número de personas y la fecha/hora solicitada.
+     *
+     * @param numPersonas Número de personas para la mesa.
+     * @param fechaHora   Fecha y hora para la reserva.
+     * @return Lista de mesas disponibles.
+     * @throws SQLException Si ocurre un error en la consulta.
+     */
     public List<Mesa> buscarMesasDisponibles(int numPersonas, LocalDateTime fechaHora) throws SQLException {
         String query = "SELECT * FROM mesas WHERE capacidad >= ? AND id NOT IN " +
                        "(SELECT mesa_id FROM reservas WHERE fecha_hora = ? AND estado = 'Confirmada')";
@@ -28,7 +43,15 @@ public class ReservaService {
         }
     }
 
-    // Crear una reserva
+    /**
+     * Crea una nueva reserva para una mesa específica.
+     *
+     * @param mesaId    ID de la mesa a reservar.
+     * @param clienteId ID del cliente que realiza la reserva.
+     * @param fechaHora Fecha y hora de la reserva.
+     * @return true si la reserva fue exitosa, false en caso contrario.
+     * @throws SQLException Si ocurre un error en la inserción.
+     */
     public boolean reservarMesa(int mesaId, int clienteId, LocalDateTime fechaHora) throws SQLException {
         String query = "INSERT INTO reservas (mesa_id, cliente_id, fecha_hora, estado) VALUES (?, ?, ?, 'Confirmada')";
         try (PreparedStatement stmt = conexion.prepareStatement(query)) {
@@ -39,7 +62,13 @@ public class ReservaService {
         }
     }
 
-    // Cancelar reserva
+    /**
+     * Cancela una reserva específica.
+     *
+     * @param reservaId ID de la reserva a cancelar.
+     * @return true si la cancelación fue exitosa, false en caso contrario.
+     * @throws SQLException Si ocurre un error en la actualización.
+     */
     public boolean cancelarReserva(int reservaId) throws SQLException {
         String query = "UPDATE reservas SET estado = 'Cancelada' WHERE id = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(query)) {
@@ -48,7 +77,13 @@ public class ReservaService {
         }
     }
 
-    // Ver reservas por cliente
+    /**
+     * Obtiene todas las reservas de un cliente específico.
+     *
+     * @param clienteId ID del cliente.
+     * @return Lista de reservas del cliente.
+     * @throws SQLException Si ocurre un error en la consulta.
+     */
     public List<Reserva> obtenerReservasPorCliente(int clienteId) throws SQLException {
         String query = "SELECT * FROM reservas WHERE cliente_id = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(query)) {
@@ -69,4 +104,3 @@ public class ReservaService {
         }
     }
 }
-

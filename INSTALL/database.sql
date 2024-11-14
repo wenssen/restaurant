@@ -1,6 +1,6 @@
-CREATE DATABASE reservas_db;
+CREATE DATABASE restaurant;
 
-USE reservas_db;
+USE restaurant;
 
 -- Tabla para almacenar las mesas
 CREATE TABLE mesas (
@@ -13,7 +13,8 @@ CREATE TABLE mesas (
 CREATE TABLE clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,      -- Nombre del cliente
-    contacto VARCHAR(100) NOT NULL     -- Información de contacto (teléfono, email, etc.)
+    contacto VARCHAR(100) NOT NULL,     -- Información de contacto (teléfono)
+    correo char(100) NOT NULL
 );
 
 -- Tabla para almacenar las reservas

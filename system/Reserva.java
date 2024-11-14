@@ -1,6 +1,9 @@
 package system;
 import java.time.LocalDateTime;
 
+/**
+ * Representa una reserva en el sistema.
+ */
 public class Reserva {
     private int id;
     private int mesaId;
@@ -8,6 +11,15 @@ public class Reserva {
     private LocalDateTime fechaHora;
     private String estado;
 
+    /**
+     * Constructor para crear una instancia de Reserva.
+     *
+     * @param id         Identificador único de la reserva.
+     * @param mesaId     Identificador de la mesa reservada.
+     * @param clienteId  Identificador del cliente que realizó la reserva.
+     * @param fechaHora  Fecha y hora de la reserva.
+     * @param estado     Estado actual de la reserva.
+     */
     public Reserva(int id, int mesaId, int clienteId, LocalDateTime fechaHora, String estado) {
         this.id = id;
         this.mesaId = mesaId;
@@ -16,7 +28,6 @@ public class Reserva {
         this.estado = estado;
     }
 
-    // Getters y setters
     public int getId() { return id; }
     public int getMesaId() { return mesaId; }
     public int getClienteId() { return clienteId; }

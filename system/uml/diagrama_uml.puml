@@ -1,0 +1,64 @@
+@startuml
+package system {
+    class Cliente {
+        - int id
+        - String nombre
+        - String contacto
+        - String correo
+        + Cliente(int, String, String)
+        + getId(): int
+        + getNombre(): String
+        + getContacto(): String
+        + getCorreo(): String
+    }
+
+    class Mesa {
+        - int id
+        - int capacidad
+        - boolean disponible
+        + Mesa(int, int, boolean)
+        + getId(): int
+        + getCapacidad(): int
+        + isDisponible(): boolean
+        + setDisponible(boolean): void
+    }
+
+    class Reserva {
+        - int id
+        - int mesaId
+        - int clienteId
+        - LocalDateTime fechaHora
+        - String estado
+        + Reserva(int, int, int, LocalDateTime, String)
+        + getId(): int
+        + getMesaId(): int
+        + getClienteId(): int
+        + getFechaHora(): LocalDateTime
+        + getEstado(): String
+        + setEstado(String): void
+    }
+
+    class ReservaService {
+        - Connection conexion
+        + ReservaService(Connection)
+        + buscarMesasDisponibles(int, LocalDateTime): List<Mesa>
+        + reservarMesa(int, int, LocalDateTime): boolean
+        + cancelarReserva(int): boolean
+        + obtenerReservasPorCliente(int): List<Reserva>
+    }
+
+    class DatabaseConnector {
+        + getConnection(): Connection
+    }
+
+    class Main {
+        + main(String[]): void
+    }
+
+    ReservaService --> Mesa
+    ReservaService --> Reserva
+    ReservaService --> Cliente
+    Main ..> ReservaService
+    Main ..> DatabaseConnector
+}
+@enduml
